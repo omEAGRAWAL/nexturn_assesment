@@ -1,0 +1,71 @@
+function parseJSONData(jsonData){
+    try {
+      return JSON.parse(jsonData);
+    } catch (error) {
+      console.error("Invalid JSON data", error);
+      return null;
+    }
+  };
+
+  function updateProductPrice(catalog, productId, newPrice){
+    const product = catalog.products.find((p) => p.id === productId);
+    if (product) {
+      product.price = newPrice;
+      return product;
+    } else {
+      return "Product not found";
+    }
+  };
+  
+  function addProduct(catalog, newProduct){
+    catalog.products.push(newProduct);
+    return catalog;
+  };
+  
+
+  function getAvailableProducts(catalog){
+    return catalog.products.filter((product) => product.available);
+  };
+  function getProductsByCategory(catalog, category){
+    return catalog.products.filter((product) => product.category === category);
+  };
+
+  function display (catalog){
+    if (!catalog.products || catalog.products.length === 0) {
+      console.log("No products in the catalog.");
+      return;
+    }
+    
+    catalog.products.forEach((product) => {
+      console.log(`ID: ${product.id}`);
+      console.log(`Name: ${product.name}`);
+      console.log(`Category: ${product.category}`);
+      console.log(`Price: $${product.price.toFixed(2)}`);
+      console.log(`Available: ${product.available ? "Yes" : "No"}`);
+    });
+  };
+
+jsondata='{"products": [{"id": 1,"name": "Smartphone","category": "Electronics","price": 599.99,"available": true},{"id": 2,"name": "Laptop","category": "Electronics","price": 999.99,"available": false}]}'
+catalog=parseJSONData(jsondata)
+console.log("catalog")
+display(catalog)
+availableProducts = getAvailableProducts(catalog);
+console.log("avail products")
+console.log(availableProducts)
+electronicsProducts = getProductsByCategory(catalog, "Electronics");
+console.log("electronic products")
+console.log(electronicsProducts)
+newProduct={
+    "id": 3,
+    "name": "Coffee Maker",
+    "category": "Home Appliances",
+    "price": 49.99,
+    "available": true
+  }
+
+catalog=addProduct(catalog, newProduct);
+updateProductPrice(catalog, 2, 950.00);
+display(catalog)
+
+
+  
